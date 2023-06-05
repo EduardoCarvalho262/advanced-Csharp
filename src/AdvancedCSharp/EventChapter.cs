@@ -6,21 +6,35 @@ using System.Threading.Tasks;
 
 namespace AdvancedCSharp
 {
+    //Step 1 Create a delegate
+    public delegate void MyIntChangedEventHandler(object sender, JobNoEventArgs e);
+
     public class EventChapter
     {
+
     }
 
     public class Sender
     {
-        public event EventHandler? MyIntChanged;
+        private MyIntChangedEventHandler? myIntChanged;
+        //Step-2 Create the event based on your own delegate
+        public event MyIntChangedEventHandler? MyIntChanged
+        {
+            add
+            {
+                myIntChanged += value;
+            }
+
+            remove
+            {
+                myIntChanged -= value;
+            }
+        }
 
         private int myInt;
         public int MyInt
         {
-            get
-            {
-                return myInt;
-            }
+            get { return myInt; }
 
             set
             {
@@ -29,23 +43,32 @@ namespace AdvancedCSharp
             }
         }
 
-        private void OnMyIntChanged()
+        protected virtual void OnMyIntChanged() //Step 3
         {
-            if(MyIntChanged != null)   
-                MyIntChanged(this, EventArgs.Empty);
-        }
-
-        public void GetNotifications(Object sender, EventArgs e)
-        {
-            Console.WriteLine("Sender himself send a notification: i have changed myint value to {0}", myInt);
+            if (myIntChanged != null)
+            {
+                JobNoEventArgs e = new JobNoEventArgs();
+                e.JobNo = MyInt;
+                myIntChanged(this, e);
+            }      
         }
     }
 
-    public class Receiver
+    public class Receiver //Step 4
     {
-        public void GetNotificationFromSender(Object sender, EventArgs e)
+        public void GetNotificationFromSender(Object sender, JobNoEventArgs e) //Same a assignment for delegate
         {
-            Console.WriteLine("Receiver receives a notification: Sender recently has chagned the myInt values.");
+            Console.WriteLine("Receiver receives a notification: Sender recently has changed the myInt valut to {0}", e.JobNo);
+        }
+    }
+
+    public class JobNoEventArgs : EventArgs 
+    {
+        int jobNo = 0;
+        public int JobNo
+        {
+            get { return jobNo; }
+            set { jobNo = value; }
         }
     }
 

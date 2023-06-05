@@ -39,9 +39,9 @@
             //Console.ReadKey();
 
 
-            Console.WriteLine("******* Exploring Events *************");
-            Sender sender = new Sender();
-            Receiver receiver = new Receiver();
+            Console.WriteLine("******* Exploring Custom Events *************");
+            var sender = new Sender();
+            var receiver = new Receiver();
 
             sender.MyIntChanged += receiver.GetNotificationFromSender;
             sender.MyInt = 1;
@@ -49,9 +49,6 @@
             //Unregistering now
             sender.MyIntChanged -= receiver.GetNotificationFromSender;
             sender.MyInt = 3;
-
-            sender.MyIntChanged += sender.GetNotifications;
-            sender.MyInt = 4;
             Console.ReadKey();
 
         }
