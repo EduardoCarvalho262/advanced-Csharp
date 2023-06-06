@@ -23,11 +23,13 @@ namespace AdvancedCSharp
             add
             {
                 myIntChanged += value;
+                Console.WriteLine("Inside of add method");
             }
 
             remove
             {
                 myIntChanged -= value;
+                Console.WriteLine("Inside of remove method");
             }
         }
 
